@@ -21,15 +21,15 @@ CONTINUOUS = ['lot_frontage', 'lot_area', 'mas_vnr_area', 'bsmtfin_sf_1', 'bsmtf
 'total_bsmt_sf', '1st_flr_sf', '2nd_flr_sf', 'gr_liv_area', 'garage_area', 'wood_deck_sf', 'open_porch_sf',
 'enclosed_porch', '3ssn_porch', 'screen_porch', 'pool_area','misc_val']
 
+# An empty dictionary I'll apend to as I explore the data
+
+CORRELATIVE_FACTORS = {}
 
 def unique_by_col(category, df):
     items = {}
     for col in df[category].columns:
         items.update({col:df[category][col].unique()}) 
     return items
-
-
-
 
 def is_outlier(points, thresh=3.5):
     """
