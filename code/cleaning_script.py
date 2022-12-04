@@ -1,6 +1,9 @@
 import re
 import numpy as np
 import pandas as pd
+import seaborn as sns
+import statsmodels.api as sm
+import matplotlib.pyplot as plt
 
 
 # the provided .txt file breaks the categories up into NOMINAL, ORDINAL, CONTINUOUS, and DISCRETE variables. I'll do that here
@@ -8,7 +11,7 @@ import pandas as pd
 
 NOMINAL = ['ms_subclass', 'ms_zoning', 'street', 'alley', 'land_contour', 'lot_config', 'neighborhood', 'condition_1', 'condition_2', 'bldg_type',
 'house_style', 'roof_style', 'roof_matl', 'exterior_1st', 'exterior_2nd', 'mas_vnr_type', 'foundation', 'heating', 'central_air', 'garage_type', 'misc_feature',
-'sale_type']
+'sale_type', 'has_fireplace']
 
 ORDINAL = ['lot_shape', 'utilities', 'land_slope', 'house_style', 'overall_qual', 'overall_cond', 'exter_qual', 'exter_cond', 'bsmt_qual',
 'bsmt_cond', 'bsmt_exposure', 'bsmtfin_type_1', 'bsmtfin_type_2', 'heating_qc', 'electrical', 'kitchen_qual', 'functional', 'fireplace_qu', 'garage_finish',
@@ -23,7 +26,6 @@ CONTINUOUS = ['lot_frontage', 'lot_area', 'mas_vnr_area', 'bsmtfin_sf_1', 'bsmtf
 
 # An empty dictionary I'll apend to as I explore the data
 
-CORRELATIVE_FACTORS = {}
 
 def unique_by_col(category, df):
     items = {}
@@ -64,3 +66,19 @@ def is_outlier(points, thresh=3.5):
 
     return abs(modified_z_score) > thresh
 
+def get_regression(df, regression_type, features):
+    X = df[features]
+    y = df['saleprice']
+
+
+
+def feature_plot(df, features):
+    for col in df[features.keys()]:
+        fig, axs = plt.subplots(1, 3)
+        fig.set_size_inches(15.5, 10.5)
+        # plot distribution
+        sns.histplot(df[col], kde=True, ax=axs[0])
+        axs[0].set_title(f"{col} Distribution")
+        axs[0].set_xlabel(col)
+        sm.qqplot(df[col], ax=axs[1],line = 'q')
+        sns.scatterplot(df, x = col, y = 'saleprice')
