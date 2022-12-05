@@ -4,6 +4,7 @@ import pandas as pd
 import seaborn as sns
 import statsmodels.api as sm
 import matplotlib.pyplot as plt
+import scipy.stats as stats
 
 
 # the provided .txt file breaks the categories up into NOMINAL, ORDINAL, CONTINUOUS, and DISCRETE variables. I'll do that here
@@ -82,3 +83,19 @@ def feature_plot(df, features):
         axs[0].set_xlabel(col)
         sm.qqplot(df[col], ax=axs[1],line = 'q')
         sns.scatterplot(df, x = col, y = 'saleprice')
+
+def transformation_plot(df, features, func):
+    for col in df[features]:
+        fig, axs = plt.subplots(1, 3)
+        fig.set_size_inches(15.5, 10.5)
+        # hist 1
+        sns.histplot(df[col], kde=True, ax=axs[0])
+        axs[0].set_title(f"{col} Before Transformation")
+        axs[0].set_xlabel(col)
+        # hist 2
+        sns.histplot(df[col].map(func),kde=True, ax = axs[1])
+        axs[1].set_title(f'{col} After Transformation')
+        # qqplot
+        sm.qqplot(df[col].map(func), ax=axs[2], dist = stats.norm, line = 'q')
+        axs[2].set_title(f'{col} QQ plot After Transformation')
+        
