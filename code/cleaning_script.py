@@ -34,60 +34,26 @@ def unique_by_col(category, df):
         items.update({col:df[category][col].unique()}) 
     return items
 
-def is_outlier(points, thresh=3.5):
-    """
-    Returns a boolean array with True if points are outliers and False
-    otherwise.
-
-    Parameters:
-    -----------
-        points : An numobservations by numdimensions array of observations
-        thresh : The modified z-score to use as a threshold. Observations with
-            a modified z-score (based on the median absolute deviation) greater
-            than this value will be classified as outliers.
-
-    Returns:
-    --------
-        mask : A numobservations-length boolean array.
-
-    References:
-    ----------
-        Boris Iglewicz and David Hoaglin (1993), "Volume 16: How to Detect and
-        Handle Outliers", The ASQC Basic References in Quality Control:
-        Statistical Techniques, Edward F. Mykytka, Ph.D., Editor.
-    """
-    if len(points.shape) == 1:
-        points = points[:,None]
-    median = np.median(points, axis=0)
-    diff = np.sum((points - median)**2, axis=-1)
-    diff = np.sqrt(diff)
-    med_abs_deviation = np.median(diff)
-
-    modified_z_score = 0.6745 * diff / med_abs_deviation
-
-    return abs(modified_z_score) > thresh
-
 def get_regression(df, regression_type, features):
     X = df[features]
     y = df['saleprice']
 
-
-
-def feature_plot(df, features):
-    for col in df[features.keys()]:
-        fig, axs = plt.subplots(1, 3)
-        fig.set_size_inches(15.5, 10.5)
-        # plot distribution
-        sns.histplot(df[col], kde=True, ax=axs[0])
-        axs[0].set_title(f"{col} Distribution")
-        axs[0].set_xlabel(col)
-        sm.qqplot(df[col], ax=axs[1],line = 'q')
-        sns.scatterplot(df, x = col, y = 'saleprice')
+def feature_plot(df, features, dic=False):
+    if dic == True:
+        features = features.keys()
+    else:
+        for col in df[features]:
+            fig, axs = plt.subplots(1, 3, figsize=(15,5))
+            # plot distribution
+            sns.histplot(df[col], kde=True, ax=axs[0])
+            axs[0].set_title(f"{col} Distribution")
+            axs[0].set_xlabel(col)
+            sm.qqplot(df[col], ax=axs[1],line = 'q')
+            sns.regplot(df, x = col, y = 'saleprice')
 
 def transformation_plot(df, features, func):
     for col in df[features]:
-        fig, axs = plt.subplots(1, 3)
-        fig.set_size_inches(15.5, 10.5)
+        fig, axs = plt.subplots(1, 3, figsize=(15,5))
         # hist 1
         sns.histplot(df[col], kde=True, ax=axs[0])
         axs[0].set_title(f"{col} Before Transformation")
@@ -98,4 +64,30 @@ def transformation_plot(df, features, func):
         # qqplot
         sm.qqplot(df[col].map(func), ax=axs[2], dist = stats.norm, line = 'q')
         axs[2].set_title(f'{col} QQ plot After Transformation')
-        
+
+def return_plot(preds, y_train, resids):
+    fix, axs = plt.subplots(1,3, figsize=(15,5))
+    axs[0].scatter(y_train, preds, edgecolors=(0, 0, 0))
+    axs[0].plot([y_train.min(), y_train.max()], [y_train.min(), y_train.max()],'r')
+
+    axs[0].set_xlabel('Actual')
+    axs[0].set_ylabel('Predicted')
+    axs[0].set_title('Predicted vs. Actual')
+
+    sns.residplot(x = preds,y = resids,lowess = True,line_kws = {'color' : 'red'}, ax = axs[1]).set(title = 'Residuals vs. Fits plot',
+        xlabel = 'Predicted value',
+        ylabel = 'Residual')
+
+    sm.qqplot(resids,dist = stats.norm,line = 'q', ax = axs[2])
+    axs[2].set_title('Normal Q-Q plot');
+
+def plot_important_features(model, X, n_features=10):
+    
+    df = pd.DataFrame({'feature': X.columns, 'importance': model.coef_})
+    df = df.sort_values('importance', ascending=False)
+    df = df.iloc[:n_features]
+    plt.figure(figsize=(10, 6))
+    plt.bar(df.feature, df.importance)
+    plt.xticks(rotation=45)
+    plt.title('Most Important Features in Model')
+    
