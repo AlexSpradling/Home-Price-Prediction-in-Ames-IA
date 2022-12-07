@@ -41,6 +41,26 @@ def unique_by_col(category, df):
         items.update({col:df[category][col].unique()}) 
     return items
 
+# find missing values in dataframe, return a dictionary of columns with missing values and the percentage of missing values
+def bucketize_missing(df):
+    # missing more than 20 % of their data
+    missing_the_most = {}
+    # missing anything
+    missing_some = {}
+    # not missing anything
+    full = []
+
+    # iterate through the columns, find any columns with missing data, append to appropriate dict or list
+    for idx, item in df.isnull().sum().items():
+        missing_amount = round(item/len(df),4)
+        if missing_amount > .20:
+            missing_the_most.update({idx:missing_amount})
+        elif item >= 1:
+            missing_some.update({idx:missing_amount})
+        else:
+            full.append(idx)
+    return missing_the_most, missing_some, full
+
 def get_regression(df, regression_type, features):
     X = df[features]
     y = df['saleprice']
