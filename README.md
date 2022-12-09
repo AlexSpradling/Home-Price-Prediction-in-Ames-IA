@@ -15,7 +15,7 @@ Via distribution visualization, we identified skew in a number of the features, 
 
 The final, improved and transformed dataset was run on 4 different linear regression models, Lasso, Ridge, Elastic Net and Ordinary Least Squares. All of the models performed similarly, with Lasso performing slightly better on Cross Validation data. In an effort to account for non-linear behavior in the gross living area and overall quality features, a polynomial transformation was performed, again raising the predictive power of the linear regression models. 
 
-The final production linear regression model was able to achieve training, validation and cross validation $R^2$ scores above .90 with Root Mean Squared Errors of $\approx$ $20,000$ on training data and $  $20,700$ on unseen data, indicating the model generalizes quite well. In order to prove the validity of our modeling choices, we entered a real estate modeling challenge on the data science webpage Kaggle, which we won.  
+The final production linear regression model was able to achieve training, validation and cross validation $ R^2 $ scores above .90 with Root Mean Squared Errors of $\approx 20,000$ on training data and $20,700$ on unseen data, indicating the model generalizes quite well. In order to prove the validity of our modeling choices, we entered a real estate modeling challenge on the data science webpage Kaggle, which we won.  
 
 It is noted that our model's predictive power came at the expense of easy interpretability and inferential power. Our transformed features were difficult to interpret, and our model had multicollinearity. However, an interpretation of 2 of the most important features is as follows:
 
