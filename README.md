@@ -21,7 +21,7 @@ The final production linear regression model was able to achieve training, valid
 
 The final production model achieved powerful predictive ability and the final deliverable was to the client's specifications.
 
-The Ames dataset has a dizzying array of features, the final production model uses $68$ total features, $21$ of which are engineered. We found that choosing to proceed with the features most correlated to `saleprice` and exploring various transformations of the data gave our model robust predictive power, however this came with much multicollinearity and at the expense of inference.
+The Ames dataset has a dizzying array of features, the final production model uses 68 total features, $21$ of which are engineered. We found that choosing to proceed with the features most correlated to `saleprice` and exploring various transformations of the data gave our model robust predictive power, however this came with much multicollinearity and at the expense of inference.
 
 
 1. Gross square footage, overall home quality, the age of the home and the neighborhood are the most important predictors to use in a hedonic price regression.
