@@ -1,171 +1,42 @@
-# Project 2 - Ames Housing Data and Kaggle Challenge
-
-Welcome to Project 2! Let's model!
-
-**Primary Learning Objectives:**
-1. Creating and iteratively refining a regression model.
-2. Using [Kaggle](https://www.kaggle.com/) to practice the modeling process.
-3. Providing business insights through reporting and presentation.
-
-You are tasked with creating a machine learning model based on the Ames Housing Dataset. This model will predict the price of a property at sale.
-
-The Ames Housing Dataset is contains over 70 columns of different features relating to houses.
-
----
-## Deliverables
-
-- We are hosting a competition on Kaggle to give you the opportunity to practice your modeling skills. You must upload at least one of your model's predictions to the competition.
-- You will submit a technical report and a presentation in your submission Repo.
-- You will present your findings to your classmates and instructors.
-
-**You will likely find that the best model for Kaggle is NOT the best model to address your data science problem.**
-
-
-## Set up
-
-Before you begin working on this project, please do the following:
-
-1. Sign up for an account on [Kaggle](https://www.kaggle.com/)
-2. **IMPORTANT**: Click this link: [Regression Challenge Sign Up](https://www.kaggle.com/t/2b7ece11c3894151818a4c768a5d9f16) to **join** the competition (otherwise you will not be able to make submissions!)
-3. Review the material on the [Kaggle challenge site](https://www.kaggle.com/competitions/1031-ames-competition/overview).
-4. Review the [data description](http://jse.amstat.org/v19n3/decock/DataDocumentation.txt).
-
-## The Modeling Process
-
-1. The train dataset has all of the columns that you will need to generate and refine your models. The test dataset has all of those columns except for the target that you are trying to predict in your regression model.
-2. Generate your regression model using the training data. We expect that within this process, you'll be making use of:
-    - train-test split
-    - cross-validation / grid searching for hyperparameters
-    - exploratory data analysis to find relationships
-    - code that reproducibly and consistently applies feature transformations
-We suggest starting your modeling with a few numeric columns that are highly correlated with the target.
-3. Predict the values for your target column in the test dataset and submit your predictions to Kaggle to see how your model does against unseen data.
-    - **Note**: Kaggle expects to see your submissions in a specific format. Check the challenge's page to make sure you are formatting your CSVs correctly!
-    - **You are limited to models you've learned in class**. In other words, you cannot use XGBoost, Neural Networks or any other model we haven't seen in class for this project.
-4. Evaluate your models!
-    - consider your evaluation metrics
-    - consider your baseline score
-    - how can your model be used for inference?
-    - why do you believe your model will generalize to new data?
-
-## Submission
-
-- Presentation slides must by pushed to your submission repo by the start of presentations.
-- Your technical report must be submitted in your submission repository by 9:00 AM Pacific on 12/9/22.
-- You must have at least one non-null model submission to Kaggle by 9:00 AM Pacific on the due date.
-
-Your technical report must include:
-
-- A README.md (that isn't this file)
-- Jupyter notebook(s) with your analysis and models (renamed to describe your project)
-- Data files
-- Presentation slides
-- Any other necessary files (images, etc.)
-
-
+# Predicting House Prices in Ames, IA Via Multiple Linear Regression 
 ---
 
-## Presentation Structure
+### Problem Statement
 
-- **Must be within time limit established by your instructor.**
-- Use Google Slides or some other presentation system (Keynote, Powerpoint, etc).
-- Consider your audience.
-- Start with the **problem** you are solving.
-- Use visuals that are appropriately scaled and interpretable.
-- Talk about your procedure/methodology (high level).
-- Talk about your primary findings.
-- Make sure you provide **clear recommendations** that follow logically from your analyses and narrative and answer your data science problem.
+Our client, Willoz, a burgeoning tech real-estate startup, desires to break into the real-estate marketplace. In an effort to differentiate their product, they hope to provide high-precision home price prediction to their users from a minimum number of data points. Using the myriad features available in the Ames, IA dataset as a laboratory, we look to identify correlative factors to home sales price and build a robust Hedonic price regression model that will generalize to unseen real estate data. 
 
-Be sure to rehearse and time your presentation before class.
+### Summary
 
----
+We began our exploration of the data by subdividing the 80 + features into four primary categories, `ORDINAL`, `NOMINAL`, `CONTINUOUS` and `DISCRETE`. The dataset required a large amount of cleaning and processing, and it was necessary to  impute missing values for several of the features. 
 
-## Rubric
-Your local instructor will evaluate your project (for the most part) using the following criteria.  You should make sure that you consider and/or follow most if not all of the considerations/recommendations outlined below **while** working through your project.
+Within these categories, we conducted a correlation analysis, looking for features within the Ames, IA dataset that had a strong Pearson correlation value relative to home sale price. Pearson correlation, $R$, is a measure of the linear correlation between two variables, and ranges from -$1$ to $+1$. A value of $1$$ indicates a perfect positive linear correlation, a value of $-1$ indicates a perfect negative linear correlation and a value of $0$ indicates no linear correlation. Since the `NOMINAL` and `ORDINAL` feature groups did not contain numeric values, we imputed numeric values based on the inherent ranking in the case of the ordinal values, or created Boolean *is* or *is not* features from the nominal values. We then filtered the list for values that had an absolute Pearson value greater than $.1$ and conducted thorough EDA on the datasets.
 
-**Scores will be out of 27 points based on the 9 items in the rubric.** <br>
-*3 points per section*<br>
+Via distribution visualization, we identified skew in a number of the features, including the dependent variable: home sales price. In an effort to build a more robust regression model, we explored log, square root and  inverse hyperbolic sine transformations on the skewed features. We found that a log transformation of gross living area, lot area, and lot frontage, as well as square root transformation of home age, garage age and total basement square footage allowed the model to perform better on the training data and generalize better to unseen data. 
 
-| Score | Interpretation                                                                                                                  |
-| ----- | ------------------------------------------------------------------------------------------------------------------------------- |
-| **0** | *Project fails to meet the minimum requirements for this item.*                                                                 |
-| **1** | *Project meets the minimum requirements for this item, but falls significantly short of portfolio-ready expectations.*          |
-| **2** | *Project exceeds the minimum requirements for this item, but falls short of portfolio-ready expectations.*                      |
-| **3** | *Project meets or exceeds portfolio-ready expectations; demonstrates a thorough understanding of every outlined consideration.* |
+The final, improved and transformed dataset was run on 4 different linear regression models, Lasso, Ridge, Elastic Net and Ordinary Least Squares. All of the models performed similarly, with Lasso performing slightly better on Cross Validation data. In an effort to account for non-linear behavior in the gross living area and overall quality features, a polynomial transformation was performed, again raising the predictive power of the linear regression models. 
 
-### The Data Science Process
+The final production linear regression model was able to achieve training, validation and cross validation $R^2$ scores above .90 with Root Mean Squared Errors of $\approx$ $20,000$ on training data and $  $20,700$ on unseen data, indicating the model generalizes quite well. In order to prove the validity of our modeling choices, we entered a real estate modeling challenge on the data science webpage Kaggle, which we won.  
 
-**Problem Statement**
-- Is it clear?
-- Is it reasonable?
-- Is the audience clearly identified?
+It is noted that our model's predictive power came at the expense of easy interpretability and inferential power. Our transformed features were difficult to interpret, and our model had multicollinearity. However, an interpretation of 2 of the most important features is as follows:
 
-**Data Cleaning and EDA**
-- Are missing values dealt with?
-- Are important distributions examined and described?
-- Are outliers identified and addressed?
-- Are appropriate summary statistics provided?
-- Are possible modeling insights to investigate discussed?
+1. `gr_liv_area` has a coefficient of $.1078$. Since our dependent variable, `saleprice` is log transformed, as is `gr_liv_area`, we interpret this coefficient as: for every 1% in gross living area, sale price increases by $.11$ % Or, for every $x$ percent increase, we can calculate 1.x to the power of the coefficient, subtract 1 and multiply by $100$. So, for every $10$ % increase in gross square footage, sales price increases by $(1.10^{.1078}-1)* 100$ or $\approx 1$ %. [SOURCE](https://data.library.virginia.edu/interpreting-log-transformations-in-a-linear-model/).
 
-**Preprocessing and Modeling**
-- Are categorical variables one-hot encoded or encoded in another logical way?
-- Are features engineered?
-- Have the data been scaled appropriately?
-- Does the student properly split the data for validation/training purposes?
-- Does the student use feature selection to remove noisy or multi-collinear features?
-- Does the student test and evaluate a variety of model types (**AT MINIMUM:** linear regression, lasso, and ridge)?
-- Does the student defend their choice of the best model for this data and problem statement?
-- Does the student explain how the model works and evaluate its performance successes/downfalls?
+2. `neighborhood_price_rank` has a coefficient of $-.041$. Since our dependent variable is log-linear, we can exponentiate the coefficient, subtract one from this and multiply by 100. This will give us the percent increase or decrease in the response for every one-unit increase in the independent variable. $exp(-.041)-1)  * 100  =  -4.0$. which means that for every $1$% decrease in neighborhood price rank, sales price falls $4$ %.
 
-**Evaluation and Conceptual Understanding**
-- Does the student accurately identify and explain the baseline score?
-- Does the student select and use metrics relevant to the problem statement?
-- Is more than one metric uses to better assess performance?
-- Does the student correctly interpret the results of their model for purposes of inference?
+### VI. Conclusions and Recommendations
 
-**Conclusion and Recommendations**
-- Are the conclusions/recommendations clearly stated?
-- Does the conclusion answer the original problem statement?
-- Is it clear how the final recommendations were reached? Do they follow logically?
-- Does the student address how their suggestions will likely benefit stakeholders?
-- Are future steps to move the project forward identified?
+The final production model achieved powerful predictive ability and the final deliverable was to the client's specifications.
 
-### Organization and Professionalism
+The Ames dataset has a dizzying array of features, the final production model uses $68$ total features, $21$ of which are engineered. We found that choosing to proceed with the features most correlated to `saleprice` and exploring various transformations of the data gave our model robust predictive power, however this came with much multicollinearity and at the expense of inference.
 
-**Project Organization**
-- Are modules imported correctly (using appropriate aliases)?
-- Are data imported/saved using relative paths (so someone can replicate your analysis)?
-- Does the README provide a good executive summary of the project?
-- Is Markdown formatting and comments used appropriately to communicate in the notebooks?
-- Are files & directories organized?
-- Are unnecessary files included?
-- Do files and directories have well-structured, appropriate, consistent names?
 
-**Visualizations**
-- Are sufficient helpful visualizations provided?
-- Are plots labeled properly?
-- Are plots interpreted appropriately?
-- Are plots formatted and scaled appropriately for inclusion in a notebook-based technical report?
+1. Gross square footage, overall home quality, the age of the home and the neighborhood are the most important predictors to use in a hedonic price regression.
 
-**Python Syntax and Control Flow**
-- Is care taken to write human readable code?
-- Is the code syntactically correct (no runtime errors)?
-- Does the code generate desired results (logically correct)?
-- Does the code follow general best practices?
+2. Choosing hedonic factors based on correlation to `saleprice` leads to a strong home price predictive ability, but the model will have multicollinearity isues and lose inferential power.
 
-**Presentation**
-- Is the problem statement clearly presented?
-- Does the body of the presentation building address the problem statement and lead to the conclusion?
-- Is the conclusion/recommendations clearly stated?
-- Is the level of technicality appropriate for the intended audience?
-- Does the student deliver their message clearly?
-- Are appropriate visualizations generated for the intended audience?
-- Are visualizations useful for supporting conclusions/explaining findings?
+3. Some of the most important features, `lot_area`, `lot_frontage`, `gr_liv_area`, as well as the target, `saleprice`, will likely require a log transformation in order for the linear model to have robust predictive power.
 
-In order to pass the project, students must earn a minimum score of 1 for each category.
-- Earning below a 1 in one or more of the above categories would result in a failing project.
-- While a minimum of 1 in each category is the required threshold for graduation, students should aim to earn at least an average of 1.5 across each category. An average score below 1.5, while it may be passing, means students may want to solicit specific feedback in order to significantly improve the project before showcasing it as part of a portfolio or the job search.
+4. `house_age` will likely require a square root transformation in order for the linear model to have robust predictive power.
 
-### REMEMBER:
+5. Non-linearity within features must be corrected through polynomial regression. The model gained enhanced predictive power by squaring `gr_liv_area` and `overall_qual_cond`.
 
-This is a learning environment and you are encouraged to try new things, even if they don't work out as well as you planned! While this rubric outlines what we look for in a _good_ project, it is up to you to go above and beyond to create a _great_ project. **Learn from your failures and you'll grow!**
