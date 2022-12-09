@@ -15,19 +15,13 @@ Via distribution visualization, we identified skew in a number of the features, 
 
 The final, improved and transformed dataset was run on 4 different linear regression models, Lasso, Ridge, Elastic Net and Ordinary Least Squares. All of the models performed similarly, with Lasso performing slightly better on Cross Validation data. In an effort to account for non-linear behavior in the gross living area and overall quality features, a polynomial transformation was performed, again raising the predictive power of the linear regression models. 
 
-The final production linear regression model was able to achieve training, validation and cross validation R^2 scores above .90 with Root Mean Squared Errors of approx 20,000 on training data and $20,700 on unseen data, indicating the model generalizes quite well. In order to prove the validity of our modeling choices, we entered a real estate modeling challenge on the data science webpage Kaggle, which we won.  
-
-It is noted that our model's predictive power came at the expense of easy interpretability and inferential power. Our transformed features were difficult to interpret, and our model had multicollinearity. However, an interpretation of 2 of the most important features is as follows:
-
-1. `gr_liv_area` has a coefficient of .1078. Since our dependent variable, `saleprice` is log transformed, as is `gr_liv_area`, we interpret this coefficient as: for every 1% in gross living area, sale price increases by .11 % Or, for every x percent increase, we can calculate 1.x to the power of the coefficient, subtract 1 and multiply by 100. So, for every 10 % increase in gross square footage, sales price increases by (1.10^{.1078}-1)* 100 or approx 1%. [SOURCE](https://data.library.virginia.edu/interpreting-log-transformations-in-a-linear-model/).
-
-2. `neighborhood_price_rank` has a coefficient of -.041. Since our dependent variable is log-linear, we can exponentiate the coefficient, subtract one from this and multiply by 100. This will give us the percent increase or decrease in the response for every one-unit increase in the independent variable. exp(-.041)-1 * 100 = -4.0. which means that for every 1% decrease in neighborhood price rank, sales price falls 4 %.
+The final production linear regression model was able to achieve training, validation and cross validation R^2 scores above .90 with Root Mean Squared Errors of approx 20,000 on training data and $20,700 on unseen data, indicating the model generalizes quite well.
 
 ### VI. Conclusions and Recommendations
 
 The final production model achieved powerful predictive ability and the final deliverable was to the client's specifications.
 
-The Ames dataset has a dizzying array of features, the final production model uses $68$ total features, $21$ of which are engineered. We found that choosing to proceed with the features most correlated to `saleprice` and exploring various transformations of the data gave our model robust predictive power, however this came with much multicollinearity and at the expense of inference.
+The Ames dataset has a dizzying array of features, the final production model uses 68 total features, $21$ of which are engineered. We found that choosing to proceed with the features most correlated to `saleprice` and exploring various transformations of the data gave our model robust predictive power, however this came with much multicollinearity and at the expense of inference.
 
 
 1. Gross square footage, overall home quality, the age of the home and the neighborhood are the most important predictors to use in a hedonic price regression.
