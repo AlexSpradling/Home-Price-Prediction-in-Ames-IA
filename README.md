@@ -19,7 +19,7 @@ The final production linear regression model was able to achieve training, valid
 
 It is noted that our model's predictive power came at the expense of easy interpretability and inferential power. Our transformed features were difficult to interpret, and our model had multicollinearity. However, an interpretation of 2 of the most important features is as follows:
 
-1. `gr_liv_area` has a coefficient of $.1078$. Since our dependent variable, `saleprice` is log transformed, as is `gr_liv_area`, we interpret this coefficient as: for every 1% in gross living area, sale price increases by $.11$ % Or, for every $x$ percent increase, we can calculate 1.x to the power of the coefficient, subtract 1 and multiply by $100$. So, for every $10$ % increase in gross square footage, sales price increases by $(1.10^{.1078}-1)* 100$ or $\approx 1$ %. [SOURCE](https://data.library.virginia.edu/interpreting-log-transformations-in-a-linear-model/).
+1. `gr_liv_area` has a coefficient of $.1078$. Since our dependent variable, `saleprice` is log transformed, as is `gr_liv_area`, we interpret this coefficient as: for every 1% in gross living area, sale price increases by .11 % Or, for every x percent increase, we can calculate 1.x to the power of the coefficient, subtract 1 and multiply by 100. So, for every 10 % increase in gross square footage, sales price increases by $(1.10^{.1078}-1)* 100$ or $\approx 1$ %. [SOURCE](https://data.library.virginia.edu/interpreting-log-transformations-in-a-linear-model/).
 
 2. `neighborhood_price_rank` has a coefficient of $-.041$. Since our dependent variable is log-linear, we can exponentiate the coefficient, subtract one from this and multiply by 100. This will give us the percent increase or decrease in the response for every one-unit increase in the independent variable. $exp(-.041)-1)  * 100  =  -4.0$. which means that for every $1$% decrease in neighborhood price rank, sales price falls $4$ %.
 
@@ -32,7 +32,7 @@ The Ames dataset has a dizzying array of features, the final production model us
 
 1. Gross square footage, overall home quality, the age of the home and the neighborhood are the most important predictors to use in a hedonic price regression.
 
-2. Choosing hedonic factors based on correlation to `saleprice` leads to a strong home price predictive ability, but the model will have multicollinearity isues and lose inferential power.
+2. Choosing hedonic factors based on correlation to `saleprice` leads to a strong home price predictive ability, but the model will have multicollinearity issues and lose inferential power.
 
 3. Some of the most important features, `lot_area`, `lot_frontage`, `gr_liv_area`, as well as the target, `saleprice`, will likely require a log transformation in order for the linear model to have robust predictive power.
 
