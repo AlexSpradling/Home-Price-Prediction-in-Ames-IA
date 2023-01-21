@@ -3,6 +3,8 @@
 
 ### Problem Statement
 
+NOTE: The scenario is for fun. The data science is for real!
+
 Our client, Wolliz, a burgeoning tech real-estate startup, desires to break into the real-estate marketplace. In an effort to differentiate their product, they hope to provide high-precision home price prediction to their users from a minimum number of data points. Using the myriad features available in the Ames, IA dataset as a laboratory, we look to identify correlative factors to home sales price and build a robust Hedonic price regression model that will generalize to unseen real estate data. 
 
 ### Summary
