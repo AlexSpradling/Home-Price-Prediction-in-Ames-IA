@@ -3,9 +3,7 @@
 
 ### Problem Statement
 
-NOTE: The scenario is for fun. The data science is for real!
-
-Our client, Wolliz, a burgeoning tech real-estate startup, desires to break into the real-estate marketplace. In an effort to differentiate their product, they hope to provide high-precision home price prediction to their users from a minimum number of data points. Using the myriad features available in the Ames, IA dataset as a laboratory, we look to identify correlative factors to home sales price and build a robust Hedonic price regression model that will generalize to unseen real estate data. 
+Using the myriad features available in the Ames, IA dataset as a laboratory, we look to identify correlative factors to home sales price and build a robust Hedonic price regression model that will generalize to unseen real estate data. 
 
 ### Summary
 
@@ -21,7 +19,7 @@ The final production linear regression model was able to achieve training, valid
 
 ### VI. Conclusions and Recommendations
 
-The final production model achieved powerful predictive ability and the final deliverable was to the client's specifications.
+The final production model achieved powerful predictive ability with a Root Mean Squared Error of $20,700 on validation data. 
 
 The Ames dataset has a dizzying array of features, the final production model uses 68 total features, 21 of which are engineered. We found that choosing to proceed with the features most correlated to `saleprice` and exploring various transformations of the data gave our model robust predictive power, however this came with much multicollinearity and at the expense of inference.
 
